@@ -1,14 +1,17 @@
 import React from "react";
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProductFetch from "./Api/Products";
+import Product from "./Pages/ProductPage";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <h1>Sotbella</h1>
-      <ProductFetch />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<ProductFetch />} />
+        <Route path="/product/:id" element={<Product />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

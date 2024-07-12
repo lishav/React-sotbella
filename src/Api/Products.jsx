@@ -1,4 +1,6 @@
+// ProductFetch.js
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Product.css';
 import Filter from './Fliter';
 
@@ -9,7 +11,6 @@ const ProductFetch = () => {
   const [error, setError] = useState(null);
   const [view, setView] = useState('grid'); // grid or list
   const [categories, setCategories] = useState([]);
-
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,7 +24,7 @@ const ProductFetch = () => {
         setFilteredProducts(products);
         setLoading(false);
 
-        // Extract categories and brands
+        // Extract categories
         const categories = [...new Set(products.map(product => product.category))];
         setCategories(categories);
       } catch (error) {
@@ -51,7 +52,7 @@ const ProductFetch = () => {
     setFilteredProducts(sorted);
   };
 
-  const handleFilter = ({ category, priceRange, brand }) => {
+  const handleFilter = ({ category, priceRange }) => {
     let filtered = [...products];
     if (category) {
       filtered = filtered.filter(product => product.category === category);
@@ -60,9 +61,7 @@ const ProductFetch = () => {
       const [min, max] = priceRange.split('-').map(Number);
       filtered = filtered.filter(product => product.price >= min && product.price <= max);
     }
-    if (brand) {
-      filtered = filtered.filter(product => (product.brand || 'Unknown') === brand);
-    }
+
     setFilteredProducts(filtered);
   };
 
@@ -82,9 +81,11 @@ const ProductFetch = () => {
           <div className={`product-section ${view}`}>
             {filteredProducts.map((product) => (
               <div key={product.id} className="product-card">
-                <div className="product-image">
-                  <img className='product-img' src={product.image} alt={product.title} />
-                </div>
+                <Link to={`/product/${product.id}`}>
+                  <div className="product-image">
+                    <img className='product-img' src={product.image} alt={product.title} />
+                  </div>
+                </Link>
                 <div className='product-title-info'>
                   <div className="product-info">
                     <h2 className='product-title'>{product.title}</h2>
